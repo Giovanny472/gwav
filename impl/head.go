@@ -26,7 +26,7 @@ type headRiff struct {
 
 var hr *headRiff
 
-func NewHeadRiff(rf [4]uint8, sr uint32, wv [4]uint8) Riff {
+func NewHeadRiff(rf [4]uint8, sr uint32, wv [4]uint8) model.Riff {
 	if hr == nil {
 		hr = &headRiff{riff: rf, chunkSizeRIFF: sr, wave: wv}
 		return hr
@@ -96,7 +96,9 @@ type headFmt struct {
 
 var hfmt *headFmt
 
-func NewHeadFmt(fm [4]uint8, sfm uint32, af uint16, nc uint16, sr uint32, br uint32, ba uint16, bs uint16) Fmt {
+func NewHeadFmt(fm [4]uint8, sfm uint32, af uint16, nc uint16,
+	sr uint32, br uint32, ba uint16, bs uint16) model.Fmt {
+
 	if hfmt == nil {
 		hfmt = &headFmt{fmt: fm, chunkSizeFMT: sfm, audioFormat: af, numChannels: nc,
 			sampleRate: sr, byteRate: br, blockAlign: ba, bitsPerSample: bs}

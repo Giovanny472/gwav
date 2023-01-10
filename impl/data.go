@@ -24,7 +24,7 @@ type datawav struct {
 
 var dwav *datawav
 
-func NewDataWav(cd [4]uint8, cs uint32, ld []any) Data {
+func NewDataWav(cd [4]uint8, cs uint32, ld []any) model.Data {
 	if dwav == nil {
 		dwav = &datawav{chunkData: cd, chunkSizeData: cs, listData: ld}
 		return dwav
