@@ -1,4 +1,4 @@
-package gwav
+package model
 
 // интерфейс для чтения файла wav
 type Wave interface {

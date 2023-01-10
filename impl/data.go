@@ -1,4 +1,4 @@
-package gwave
+package gwav
 
 type datawav struct {
 

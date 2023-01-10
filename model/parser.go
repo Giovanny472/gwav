@@ -1,4 +1,4 @@
-package wave
+package model
 
 type Parser interface {
 	Parse()
