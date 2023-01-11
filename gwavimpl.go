@@ -40,3 +40,8 @@ func (gw *gwavаfacade) Read() (*[]byte, error) {
 
 	return filebytes, nil
 }
+
+func (gw *gwavаfacade) Parse(data *[]byte) (model.Wave, error) {
+	// Парсе файла-wav
+	return gw.parser.Parse(data)
+}
