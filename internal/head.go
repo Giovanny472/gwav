@@ -1,4 +1,4 @@
-package impl
+package internal
 
 import "github.com/Giovanny472/gwav/model"
 
@@ -29,7 +29,6 @@ var hr *headRiff
 func NewHeadRiff(rf [4]uint8, sr uint32, wv [4]uint8) model.Riff {
 	if hr == nil {
 		hr = &headRiff{riff: rf, chunkSizeRIFF: sr, wave: wv}
-		return hr
 	}
 	return hr
 }

@@ -1,5 +1,6 @@
 package model
 
 type Parser interface {
-	Parse()
+	// данные файла-wav
+	Parse(dw *[]byte) Wave
 }

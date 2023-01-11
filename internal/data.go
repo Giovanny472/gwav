@@ -1,4 +1,4 @@
-package impl
+package internal
 
 import "github.com/Giovanny472/gwav/model"
 
@@ -27,7 +27,6 @@ var dwav *datawav
 func NewDataWav(cd [4]uint8, cs uint32, ld []any) model.Data {
 	if dwav == nil {
 		dwav = &datawav{chunkData: cd, chunkSizeData: cs, listData: ld}
-		return dwav
 	}
 	return dwav
 }
