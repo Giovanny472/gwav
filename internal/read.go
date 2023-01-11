@@ -11,11 +11,19 @@ type readwav struct {
 
 	// путь файла-wav
 	pathfile string
+
+	// содержание файла
+	filebytes []byte
 }
 
 var readw *readwav
 
 func NewReader(path string) (model.Reader, error) {
+
+	_, err := os.Stat(path)
+	if err != nil {
+		return nil, err
+	}
 
 	if readw == nil {
 		readw = &readwav{pathfile: path}
@@ -29,11 +37,12 @@ func (rw *readwav) Read() (*[]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer file.Close()
 
-	filebytes, err := io.ReadAll(file)
+	rw.filebytes, err = io.ReadAll(file)
 	if err != nil {
 		return nil, err
 	}
 
-	return &filebytes, nil
+	return &rw.filebytes, nil
 }
