@@ -24,7 +24,7 @@ func NewReaderWav(pathFile string) (GWav, error) {
 	}
 
 	// создание
-	if gwf != nil {
+	if gwf == nil {
 		gwf = &gwavаfacade{reader: rd,
 			parser: internal.NewParser()}
 	}
