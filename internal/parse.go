@@ -28,11 +28,16 @@ func NewParser(bw model.BuilderWav) model.Parser {
 
 func (pw *parsewav) Parse(dw *[]byte) (model.Wave, error) {
 
-	p := (*dw)[model.IdxStartWordRiff:model.IdxEndWordRiff]
+	a := (*dw)[model.IdxStartWordRiff:model.IdxEndWordRiff]
+	b := (*dw)[model.IdxStartChunkSzRiff:model.IdxEndChunkSzRiff]
+	c := (*dw)[model.IdxStartWordWave:model.IdxEndWordWave]
+
 	//pw.сhunkRIFF[0] = (*dw)[model.IdxStartWordRiff:model.IdxEndWordRiff]
 
 	//pw.сhunkRIFF[0]
-	fmt.Printf("val -->  %T", p)
+	fmt.Printf("val a-->  %T", a)
+	fmt.Printf("val b-->  %T", b)
+	fmt.Printf("val c-->  %T", c)
 	//fmt.Println(pw.chunkRIFF)
 
 	return nil, nil
