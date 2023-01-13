@@ -71,7 +71,7 @@ func (hrf *headRiff) ChunkSizeRIFF() uint32 {
 	return hrf.chunkSizeRIFF
 }
 
-func (hrf *headRiff) WAVE() [4]uint8 {
+func (hrf *headRiff) ChunkWave() [4]uint8 {
 	return hrf.wave
 }
 

@@ -31,7 +31,7 @@ type Riff interface {
 	// WAVE header
 	// секция для слова WAVE типа RIFF
 	// 4 байта (8-11 позиция). Big-endian form
-	WAVE() [4]uint8
+	ChunkWave() [4]uint8
 }
 
 type Fmt interface {

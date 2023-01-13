@@ -12,6 +12,9 @@ type gwavаfacade struct {
 
 	// parser
 	parser model.Parser
+
+	// файл wav
+	wav model.Wave
 }
 
 var gwf *gwavаfacade
@@ -42,6 +45,7 @@ func (gw *gwavаfacade) Read() (*[]byte, error) {
 }
 
 func (gw *gwavаfacade) Parse(data *[]byte) (model.Wave, error) {
-	// Парсе файла-wav
-	return gw.parser.Parse(data)
+	var err error
+	gw.wav, err = gw.parser.Parse(data)
+	return gw.wav, err
 }
