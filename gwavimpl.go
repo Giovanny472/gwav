@@ -26,10 +26,13 @@ func NewReaderWav(pathFile string) (GWav, error) {
 		return nil, err
 	}
 
-	// создание
+	// создание WAVE с помощью parser и builder
 	if gwf == nil {
 		gwf = &gwavаfacade{reader: rd,
-			parser: internal.NewParser()}
+
+			// создание объекта parser и передается builder
+			// для создания экземпляра wave
+			parser: internal.NewParser(internal.NewBuildWav())}
 	}
 
 	return gwf, nil
@@ -48,6 +51,6 @@ func (gw *gwavаfacade) Read() (*[]byte, error) {
 
 func (gw *gwavаfacade) Parse(data *[]byte) (model.Wave, error) {
 	var err error
-	gw.wav, err = gw.parser.Parse(data, nil)
+	gw.wav, err = gw.parser.Parse(data)
 	return gw.wav, err
 }

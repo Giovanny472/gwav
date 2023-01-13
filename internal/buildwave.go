@@ -7,6 +7,14 @@ type buildwav struct {
 
 var buildw *buildwav
 
+func NewBuildWav() model.BuilderWav {
+	if buildw == nil {
+		buildw = &buildwav{}
+	}
+
+	return buildw
+}
+
 // создание riff
 func (bw *buildwav) BuildHeadRiff() model.Riff {
 	return nil

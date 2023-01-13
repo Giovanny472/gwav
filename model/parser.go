@@ -5,51 +5,51 @@ type indexDataWav int
 const (
 
 	// константы для RIFF header
-	idxStartWordRiff indexDataWav = 0
-	idxEndWordRiff   indexDataWav = 3
+	IdxStartWordRiff indexDataWav = 0
+	IdxEndWordRiff   indexDataWav = 3
 
-	idxStartChunkSzRiff indexDataWav = 4
-	idxEndChunkSzRiff   indexDataWav = 7
+	IdxStartChunkSzRiff indexDataWav = 4
+	IdxEndChunkSzRiff   indexDataWav = 7
 
-	idxStartWordWave indexDataWav = 8
-	idxEndWordWave   indexDataWav = 11
+	IdxStartWordWave indexDataWav = 8
+	IdxEndWordWave   indexDataWav = 11
 
 	// константы для FMT header
-	idxStartWordFmt indexDataWav = 12
-	idxEndWordFmt   indexDataWav = 15
+	IdxStartWordFmt indexDataWav = 12
+	IdxEndWordFmt   indexDataWav = 15
 
-	idxStartChunkSzFmt indexDataWav = 16
-	idxEndChunkSzFmt   indexDataWav = 19
+	IdxStartChunkSzFmt indexDataWav = 16
+	IdxEndChunkSzFmt   indexDataWav = 19
 
-	idxStartAudioformat indexDataWav = 20
-	idxEndAudioformat   indexDataWav = 21
+	IdxStartAudioformat indexDataWav = 20
+	IdxEndAudioformat   indexDataWav = 21
 
-	idxStartNumChannels indexDataWav = 22
-	idxEndNumChannels   indexDataWav = 23
+	IdxStartNumChannels indexDataWav = 22
+	IdxEndNumChannels   indexDataWav = 23
 
-	idxStartSampleRate indexDataWav = 24
-	idxEndSampleRate   indexDataWav = 27
+	IdxStartSampleRate indexDataWav = 24
+	IdxEndSampleRate   indexDataWav = 27
 
-	idxStartByteRate indexDataWav = 28
-	idxEndByteRate   indexDataWav = 31
+	IdxStartByteRate indexDataWav = 28
+	IdxEndByteRate   indexDataWav = 31
 
-	idxStartBlockAlign indexDataWav = 32
-	idxEndBlockAlign   indexDataWav = 33
+	IdxStartBlockAlign indexDataWav = 32
+	IdxEndBlockAlign   indexDataWav = 33
 
-	idxStartBitsPerSample indexDataWav = 34
-	idxEndBitsPerSample   indexDataWav = 35
+	IdxStartBitsPerSample indexDataWav = 34
+	IdxEndBitsPerSample   indexDataWav = 35
 
 	// константы для данных
-	idxStartWordData indexDataWav = 36
-	idxEndWordData   indexDataWav = 39
+	IdxStartWordData indexDataWav = 36
+	IdxEndWordData   indexDataWav = 39
 
-	idxStartChunkSzData indexDataWav = 40
-	idxEndChunkSzData   indexDataWav = 43
+	IdxStartChunkSzData indexDataWav = 40
+	IdxEndChunkSzData   indexDataWav = 43
 
-	idxStartChunkData indexDataWav = 44
+	IdxStartChunkData indexDataWav = 44
 )
 
 type Parser interface {
 	// данные файла-wav
-	Parse(dw *[]byte, bw BuilderWav) (Wave, error)
+	Parse(dw *[]byte) (Wave, error)
 }
