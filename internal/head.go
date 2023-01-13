@@ -5,6 +5,36 @@ import "github.com/Giovanny472/gwav/model"
 //**************************************//
 //    			RIFF 					//
 //**************************************//
+type headwav struct {
+
+	// заголовок riff
+	riff model.Riff
+
+	// заголовок fmt
+	fmt model.Fmt
+}
+
+var headw *headwav
+
+func NewHeadWav() model.Header {
+
+	if headw == nil {
+		headw = &headwav{}
+	}
+	return headw
+}
+
+func (hw *headwav) Riff() model.Riff {
+	return hw.riff
+}
+
+func (hw *headwav) Fmt() model.Fmt {
+	return hw.fmt
+}
+
+//**************************************//
+//    			RIFF 					//
+//**************************************//
 
 type headRiff struct {
 

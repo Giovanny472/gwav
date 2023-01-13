@@ -2,17 +2,17 @@ package model
 
 // интерфейс для чтения файла wav
 type Wave interface {
-	Header
-	Data
+	Head() Header
+	Data() Data
 }
 
 type Header interface {
 
 	// заголовок
-	Riff
+	Riff() Riff
 
 	// fmt - описывает формат звуковых данных:
-	Fmt
+	Fmt() Fmt
 }
 
 type Riff interface {
