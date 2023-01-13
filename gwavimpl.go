@@ -36,6 +36,8 @@ func NewReaderWav(pathFile string) (GWav, error) {
 }
 
 func (gw *gwavаfacade) Read() (*[]byte, error) {
+
+	// читаем файл-wav
 	filebytes, err := gw.reader.Read()
 	if err != nil {
 		return nil, err
@@ -46,6 +48,6 @@ func (gw *gwavаfacade) Read() (*[]byte, error) {
 
 func (gw *gwavаfacade) Parse(data *[]byte) (model.Wave, error) {
 	var err error
-	gw.wav, err = gw.parser.Parse(data)
+	gw.wav, err = gw.parser.Parse(data, nil)
 	return gw.wav, err
 }

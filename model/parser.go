@@ -51,5 +51,5 @@ const (
 
 type Parser interface {
 	// данные файла-wav
-	Parse(dw *[]byte) (Wave, error)
+	Parse(dw *[]byte, bw BuilderWav) (Wave, error)
 }

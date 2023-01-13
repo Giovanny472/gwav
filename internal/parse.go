@@ -15,7 +15,7 @@ func NewParser() model.Parser {
 	return parsew
 }
 
-func (pw *parsewav) Parse(dw *[]byte) (model.Wave, error) {
+func (pw *parsewav) Parse(dw *[]byte, bw model.BuilderWav) (model.Wave, error) {
 
 	return nil, nil
 }
