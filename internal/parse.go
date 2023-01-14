@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/Giovanny472/gwav/model"
@@ -28,16 +29,21 @@ func NewParser(bw model.BuilderWav) model.Parser {
 
 func (pw *parsewav) Parse(dw *[]byte) (model.Wave, error) {
 
-	a := (*dw)[model.IdxStartWordRiff:model.IdxEndWordRiff]
+	strRiff := string((*dw)[model.IdxStartWordRiff:model.IdxEndWordRiff])
+	if strRiff != string(model.ConstRIFF) {
+		return nil, errors.New("слова RIFF не найдено. значение: " + strRiff)
+	}
+
 	b := (*dw)[model.IdxStartChunkSzRiff:model.IdxEndChunkSzRiff]
 	c := (*dw)[model.IdxStartWordWave:model.IdxEndWordWave]
 
 	//pw.сhunkRIFF[0] = (*dw)[model.IdxStartWordRiff:model.IdxEndWordRiff]
 
 	//pw.сhunkRIFF[0]
-	fmt.Printf("val a-->  %T", a)
-	fmt.Printf("val b-->  %T", b)
-	fmt.Printf("val c-->  %T", c)
+	fmt.Println("strRiff -->", strRiff)
+	fmt.Printf("val b-->  %T , val: %v  \n", b, b)
+	fmt.Printf("val c-->  %T , val: %v  \n", c, c)
+
 	//fmt.Println(pw.chunkRIFF)
 
 	return nil, nil

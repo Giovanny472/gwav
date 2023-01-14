@@ -1,5 +1,13 @@
 package model
 
+type WavConst string
+
+const (
+	ConstRIFF WavConst = "RIFF"
+	ConstWAVE WavConst = "WAVE"
+	ConstFMT  WavConst = "fmt"
+)
+
 type indexDataWav int
 
 const (
