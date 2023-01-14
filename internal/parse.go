@@ -11,8 +11,9 @@ type parsewav struct {
 
 	// RIFF
 	сhunkRIFF     string
-	сhunkSizeRIFF uint32
-	сhunkWave     [4]uint8
+	сhunkSizeRIFF string
+	сhunkWave     string
+	сhunkFmt      string
 
 	// для создания объекта wav
 	buildwav model.BuilderWav
@@ -34,15 +35,23 @@ func (pw *parsewav) Parse(dw *[]byte) (model.Wave, error) {
 		return nil, errors.New("слово RIFF не найдено. значение: " + pw.сhunkRIFF)
 	}
 
-	b := (*dw)[model.IdxStartChunkSzRiff:model.IdxEndChunkSzRiff]
-	c := (*dw)[model.IdxStartWordWave:model.IdxEndWordWave]
+	pw.сhunkSizeRIFF = string((*dw)[model.IdxStartChunkSzRiff:model.IdxEndChunkSzRiff])
 
-	//pw.сhunkRIFF[0] = (*dw)[model.IdxStartWordRiff:model.IdxEndWordRiff]
+	pw.сhunkWave = string((*dw)[model.IdxStartWordWave:model.IdxEndWordWave])
+	if pw.сhunkWave != string(model.ConstWAVE) {
+		return nil, errors.New("слово WAVE не найдено. значение: " + pw.сhunkWave)
+	}
+
+	pw.сhunkFmt = string((*dw)[model.IdxStartWordFmt:model.IdxEndWordFmt])
+	if pw.сhunkRIFF != string(model.ConstRIFF) {
+		return nil, errors.New("слово FMT не найдено. значение: " + pw.сhunkFmt)
+	}
 
 	//pw.сhunkRIFF[0]
 	fmt.Println("strRiff -->", pw.сhunkRIFF)
-	fmt.Printf("val b-->  %T , val: %v  \n", b, b)
-	fmt.Printf("val c-->  %T , val: %v  \n", c, c)
+	fmt.Println("strsize -->", pw.сhunkSizeRIFF)
+	fmt.Println("strWAVE -->", pw.сhunkWave)
+	fmt.Println("strFmt -->", pw.сhunkFmt)
 
 	//fmt.Println(pw.chunkRIFF)
 

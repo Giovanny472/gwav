@@ -14,17 +14,17 @@ const (
 
 	// константы для RIFF header
 	IdxStartWordRiff indexDataWav = 0
-	IdxEndWordRiff   indexDataWav = 3
+	IdxEndWordRiff   indexDataWav = 4
 
 	IdxStartChunkSzRiff indexDataWav = 4
-	IdxEndChunkSzRiff   indexDataWav = 7
+	IdxEndChunkSzRiff   indexDataWav = 8
 
 	IdxStartWordWave indexDataWav = 8
-	IdxEndWordWave   indexDataWav = 11
+	IdxEndWordWave   indexDataWav = 12
 
 	// константы для FMT header
 	IdxStartWordFmt indexDataWav = 12
-	IdxEndWordFmt   indexDataWav = 15
+	IdxEndWordFmt   indexDataWav = 16
 
 	IdxStartChunkSzFmt indexDataWav = 16
 	IdxEndChunkSzFmt   indexDataWav = 19
