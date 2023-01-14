@@ -10,7 +10,7 @@ import (
 type parsewav struct {
 
 	// RIFF
-	сhunkRIFF     [4]uint8
+	сhunkRIFF     string
 	сhunkSizeRIFF uint32
 	сhunkWave     [4]uint8
 
@@ -29,9 +29,9 @@ func NewParser(bw model.BuilderWav) model.Parser {
 
 func (pw *parsewav) Parse(dw *[]byte) (model.Wave, error) {
 
-	strRiff := string((*dw)[model.IdxStartWordRiff:model.IdxEndWordRiff])
-	if strRiff != string(model.ConstRIFF) {
-		return nil, errors.New("слова RIFF не найдено. значение: " + strRiff)
+	pw.сhunkRIFF = string((*dw)[model.IdxStartWordRiff:model.IdxEndWordRiff])
+	if pw.сhunkRIFF != string(model.ConstRIFF) {
+		return nil, errors.New("слово RIFF не найдено. значение: " + pw.сhunkRIFF)
 	}
 
 	b := (*dw)[model.IdxStartChunkSzRiff:model.IdxEndChunkSzRiff]
@@ -40,7 +40,7 @@ func (pw *parsewav) Parse(dw *[]byte) (model.Wave, error) {
 	//pw.сhunkRIFF[0] = (*dw)[model.IdxStartWordRiff:model.IdxEndWordRiff]
 
 	//pw.сhunkRIFF[0]
-	fmt.Println("strRiff -->", strRiff)
+	fmt.Println("strRiff -->", pw.сhunkRIFF)
 	fmt.Printf("val b-->  %T , val: %v  \n", b, b)
 	fmt.Printf("val c-->  %T , val: %v  \n", c, c)
 
