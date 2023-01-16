@@ -18,6 +18,7 @@ type parsewav struct {
 	//  fmt
 	сhunkFmt     string
 	сhunkSizeFmt int
+	audioformat  int
 
 	// для создания объекта wav
 	buildwav model.BuilderWav
@@ -66,14 +67,22 @@ func (pw *parsewav) Parse(dw *[]byte) (model.Wave, error) {
 	strSzFmt := string((*dw)[model.IdxStartChunkSzFmt:model.IdxEndChunkSzFmt])
 	pw.сhunkSizeFmt, pw.err = strconv.Atoi(strSzFmt)
 	if pw.err != nil {
-		return nil, errors.New("ошибка при получении sizeRiff. Значение: " + strconv.Itoa(pw.сhunkSizeFmt))
+		return nil, errors.New("ошибка при получении sizeFmt. Значение: " + strconv.Itoa(pw.сhunkSizeFmt))
 	}
 
-	//pw.сhunkRIFF[0]
+	// audioformat
+	strAudioFormat := string((*dw)[model.IdxStartAudioformat:model.IdxEndAudioformat])
+	pw.audioformat, pw.err = strconv.Atoi(strAudioFormat)
+	if pw.err != nil {
+		return nil, errors.New("ошибка при получении audioformat. Значение: " + strconv.Itoa(pw.audioformat))
+	}
+
 	fmt.Println("strRiff -->", pw.сhunkRIFF)
 	fmt.Println("strsize -->", pw.сhunkSizeRIFF)
 	fmt.Println("strWAVE -->", pw.сhunkWave)
 	fmt.Println("strFmt -->", pw.сhunkFmt)
+	fmt.Println("сhunkSizeFmt -->", pw.сhunkSizeFmt)
+	fmt.Println("audioformat -->", pw.audioformat)
 
 	//fmt.Println(pw.chunkRIFF)
 
