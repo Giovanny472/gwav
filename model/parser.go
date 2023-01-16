@@ -27,25 +27,25 @@ const (
 	IdxEndWordFmt   indexDataWav = 16
 
 	IdxStartChunkSzFmt indexDataWav = 16
-	IdxEndChunkSzFmt   indexDataWav = 19
+	IdxEndChunkSzFmt   indexDataWav = 20
 
 	IdxStartAudioformat indexDataWav = 20
-	IdxEndAudioformat   indexDataWav = 21
+	IdxEndAudioformat   indexDataWav = 22
 
 	IdxStartNumChannels indexDataWav = 22
-	IdxEndNumChannels   indexDataWav = 23
+	IdxEndNumChannels   indexDataWav = 24
 
 	IdxStartSampleRate indexDataWav = 24
-	IdxEndSampleRate   indexDataWav = 27
+	IdxEndSampleRate   indexDataWav = 28
 
 	IdxStartByteRate indexDataWav = 28
-	IdxEndByteRate   indexDataWav = 31
+	IdxEndByteRate   indexDataWav = 32
 
 	IdxStartBlockAlign indexDataWav = 32
-	IdxEndBlockAlign   indexDataWav = 33
+	IdxEndBlockAlign   indexDataWav = 34
 
 	IdxStartBitsPerSample indexDataWav = 34
-	IdxEndBitsPerSample   indexDataWav = 35
+	IdxEndBitsPerSample   indexDataWav = 36
 
 	// константы для данных
 	IdxStartWordData indexDataWav = 36

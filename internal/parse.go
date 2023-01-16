@@ -1,9 +1,9 @@
 package internal
 
 import (
+	"encoding/binary"
 	"errors"
 	"fmt"
-	"strconv"
 
 	"github.com/Giovanny472/gwav/model"
 )
@@ -12,19 +12,16 @@ type parsewav struct {
 
 	// RIFF
 	сhunkRIFF     string
-	сhunkSizeRIFF int
+	сhunkSizeRIFF uint32
 	сhunkWave     string
 
 	//  fmt
 	сhunkFmt     string
-	сhunkSizeFmt int
-	audioformat  int
+	сhunkSizeFmt uint32
+	audioformat  uint16
 
 	// для создания объекта wav
 	buildwav model.BuilderWav
-
-	// принимаеи ошибки
-	err error
 }
 
 var parsew *parsewav
@@ -45,11 +42,8 @@ func (pw *parsewav) Parse(dw *[]byte) (model.Wave, error) {
 	}
 
 	// size RIFF
-	strSzRiff := string((*dw)[model.IdxStartChunkSzRiff:model.IdxEndChunkSzRiff])
-	pw.сhunkSizeRIFF, pw.err = strconv.Atoi(strSzRiff)
-	if pw.err != nil {
-		return nil, errors.New("ошибка при получении sizeRiff. Значение: " + strconv.Itoa(pw.сhunkSizeRIFF))
-	}
+	szRiff := (*dw)[model.IdxStartChunkSzRiff:model.IdxEndChunkSzRiff]
+	pw.сhunkSizeRIFF = binary.LittleEndian.Uint32(szRiff)
 
 	// слово WAVE
 	pw.сhunkWave = string((*dw)[model.IdxStartWordWave:model.IdxEndWordWave])
@@ -64,18 +58,12 @@ func (pw *parsewav) Parse(dw *[]byte) (model.Wave, error) {
 	}
 
 	// size fmt
-	strSzFmt := string((*dw)[model.IdxStartChunkSzFmt:model.IdxEndChunkSzFmt])
-	pw.сhunkSizeFmt, pw.err = strconv.Atoi(strSzFmt)
-	if pw.err != nil {
-		return nil, errors.New("ошибка при получении sizeFmt. Значение: " + strconv.Itoa(pw.сhunkSizeFmt))
-	}
+	szFmt := (*dw)[model.IdxStartChunkSzFmt:model.IdxEndChunkSzFmt]
+	pw.сhunkSizeFmt = binary.LittleEndian.Uint32(szFmt)
 
 	// audioformat
-	strAudioFormat := string((*dw)[model.IdxStartAudioformat:model.IdxEndAudioformat])
-	pw.audioformat, pw.err = strconv.Atoi(strAudioFormat)
-	if pw.err != nil {
-		return nil, errors.New("ошибка при получении audioformat. Значение: " + strconv.Itoa(pw.audioformat))
-	}
+	audioFormat := (*dw)[model.IdxStartAudioformat:model.IdxEndAudioformat]
+	pw.audioformat = binary.LittleEndian.Uint16(audioFormat)
 
 	fmt.Println("strRiff -->", pw.сhunkRIFF)
 	fmt.Println("strsize -->", pw.сhunkSizeRIFF)
