@@ -19,6 +19,11 @@ type parsewav struct {
 	сhunkFmt     string
 	сhunkSizeFmt uint32
 	audioformat  uint16
+	numChannels  uint16
+	sampleRate   uint32
+	byteRate     uint32
+	blockAling   uint16
+	bitperSample uint16
 
 	// для создания объекта wav
 	buildwav model.BuilderWav
@@ -65,12 +70,38 @@ func (pw *parsewav) Parse(dw *[]byte) (model.Wave, error) {
 	audioFormat := (*dw)[model.IdxStartAudioformat:model.IdxEndAudioformat]
 	pw.audioformat = binary.LittleEndian.Uint16(audioFormat)
 
+	// numChannels
+	numch := (*dw)[model.IdxStartNumChannels:model.IdxEndNumChannels]
+	pw.numChannels = binary.LittleEndian.Uint16(numch)
+
+	// samplerate
+	samplerate := (*dw)[model.IdxStartSampleRate:model.IdxEndSampleRate]
+	pw.sampleRate = binary.LittleEndian.Uint32(samplerate)
+
+	// byterate
+	byterate := (*dw)[model.IdxStartByteRate:model.IdxEndByteRate]
+	pw.byteRate = binary.LittleEndian.Uint32(byterate)
+
+	// blockalign
+	blockalign := (*dw)[model.IdxStartBlockAlign:model.IdxEndBlockAlign]
+	pw.blockAling = binary.LittleEndian.Uint16(blockalign)
+
+	// bitspersample
+	bitssample := (*dw)[model.IdxStartBitsPerSample:model.IdxEndBitsPerSample]
+	pw.bitperSample = binary.LittleEndian.Uint16(bitssample)
+
 	fmt.Println("strRiff -->", pw.сhunkRIFF)
 	fmt.Println("strsize -->", pw.сhunkSizeRIFF)
 	fmt.Println("strWAVE -->", pw.сhunkWave)
+
 	fmt.Println("strFmt -->", pw.сhunkFmt)
 	fmt.Println("сhunkSizeFmt -->", pw.сhunkSizeFmt)
 	fmt.Println("audioformat -->", pw.audioformat)
+	fmt.Println("numChannels -->", pw.numChannels)
+	fmt.Println("samplerate -->", pw.sampleRate)
+	fmt.Println("byteRate -->", pw.byteRate)
+	fmt.Println("blockAling -->", pw.blockAling)
+	fmt.Println("bitperSample -->", pw.bitperSample)
 
 	//fmt.Println(pw.chunkRIFF)
 
