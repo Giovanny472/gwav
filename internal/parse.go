@@ -114,7 +114,7 @@ func (pw *parsewav) Parse(dw *[]byte) (model.Wave, error) {
 	pw.сhunkSizeData = binary.LittleEndian.Uint32(szData)
 
 	// data audio
-	dataAudio := (*dw)[model.IdxStartChunkData : len(*dw)-1]
+	dataAudio := (*dw)[model.IdxStartChunkData:pw.сhunkSizeData]
 	pw.dataaudio = dataAudio
 	//pw.dataaudio = binary.LittleEndian.Uint32(dataAudio)
 
@@ -137,9 +137,8 @@ func (pw *parsewav) Parse(dw *[]byte) (model.Wave, error) {
 
 	fmt.Println("strdata -->", pw.сhunkData)
 	fmt.Println("sizeData -->", pw.сhunkSizeData)
-	fmt.Println("Data -->", pw.сhunkSizeData)
-	fmt.Println("Data_lenght -->", len(pw.dataaudio))
 	fmt.Println("Data_audio -->", pw.dataaudio)
+	fmt.Println("Data_lenght -->", len(pw.dataaudio))
 
 	return nil, nil
 }
