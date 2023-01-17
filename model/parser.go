@@ -6,6 +6,7 @@ const (
 	ConstRIFF WavConst = "RIFF"
 	ConstWAVE WavConst = "WAVE"
 	ConstFMT  WavConst = "fmt"
+	ConstData WavConst = "data"
 )
 
 type indexDataWav int
@@ -49,10 +50,10 @@ const (
 
 	// константы для данных
 	IdxStartWordData indexDataWav = 36
-	IdxEndWordData   indexDataWav = 39
+	IdxEndWordData   indexDataWav = 40
 
 	IdxStartChunkSzData indexDataWav = 40
-	IdxEndChunkSzData   indexDataWav = 43
+	IdxEndChunkSzData   indexDataWav = 44
 
 	IdxStartChunkData indexDataWav = 44
 )
