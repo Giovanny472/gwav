@@ -114,7 +114,7 @@ func (pw *parsewav) Parse(dw *[]byte) (model.Wave, error) {
 	pw.сhunkSizeData = binary.LittleEndian.Uint32(szData)
 
 	// data audio
-	dataAudio := (*dw)[model.IdxStartChunkData:pw.сhunkSizeData]
+	dataAudio := (*dw)[model.IdxStartChunkData:]
 	pw.dataaudio = dataAudio
 	//pw.dataaudio = binary.LittleEndian.Uint32(dataAudio)
 
