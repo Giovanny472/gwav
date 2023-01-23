@@ -28,7 +28,7 @@ type parsewav struct {
 	// data
 	сhunkData     string
 	сhunkSizeData uint32
-	dataaudio     []byte
+	dataaudio     map[model.WavChannels][]uint32
 
 	// для создания объекта wav
 	buildwav model.BuilderWav
@@ -45,6 +45,35 @@ func NewParser(bw model.BuilderWav) model.Parser {
 
 func (pw *parsewav) Parse(dw *[]byte) (model.Wave, error) {
 
+	// читаем заголовок
+	pw.readHeader(dw)
+
+	// читаем данные
+	pw.readData(dw)
+
+	// отображение данных
+	fmt.Println("Riff: ", pw.сhunkRIFF)
+	fmt.Println("Riffsize: ", pw.сhunkSizeRIFF)
+	fmt.Println("WAVE: ", pw.сhunkWave)
+
+	fmt.Println("Fmt: ", pw.сhunkFmt)
+	fmt.Println("сhunkSizeFmt: ", pw.сhunkSizeFmt)
+	fmt.Println("audioformat: ", pw.audioformat)
+	fmt.Println("numChannels: ", pw.numChannels)
+	fmt.Println("sampleRate: ", pw.sampleRate)
+	fmt.Println("byteRate: ", pw.byteRate)
+	fmt.Println("blockAling: ", pw.blockAling)
+	fmt.Println("bitperSample: ", pw.bitperSample)
+
+	fmt.Println("data :", pw.сhunkData)
+	fmt.Println("data size: ", pw.сhunkSizeData)
+	fmt.Println("dataaudio: ", pw.dataaudio)
+
+	return nil, nil
+}
+
+func (pw *parsewav) readHeader(dw *[]byte) error {
+
 	//*******************************
 	//    З А Г О Л О В О К
 	//*******************************
@@ -52,7 +81,7 @@ func (pw *parsewav) Parse(dw *[]byte) (model.Wave, error) {
 	// cлово RIFF
 	pw.сhunkRIFF = string((*dw)[model.IdxStartWordRiff:model.IdxEndWordRiff])
 	if pw.сhunkRIFF != string(model.ConstRIFF) {
-		return nil, errors.New("слово RIFF не найдено. Значение: " + pw.сhunkRIFF)
+		return errors.New("слово RIFF не найдено. Значение: " + pw.сhunkRIFF)
 	}
 
 	// size RIFF
@@ -62,13 +91,13 @@ func (pw *parsewav) Parse(dw *[]byte) (model.Wave, error) {
 	// слово WAVE
 	pw.сhunkWave = string((*dw)[model.IdxStartWordWave:model.IdxEndWordWave])
 	if pw.сhunkWave != string(model.ConstWAVE) {
-		return nil, errors.New("слово WAVE не найдено. Значение: " + pw.сhunkWave)
+		return errors.New("слово WAVE не найдено. Значение: " + pw.сhunkWave)
 	}
 
 	// cлово fmt
 	pw.сhunkFmt = string((*dw)[model.IdxStartWordFmt:model.IdxEndWordFmt])
 	if pw.сhunkRIFF != string(model.ConstRIFF) {
-		return nil, errors.New("слово FMT не найдено. Значение:" + pw.сhunkFmt)
+		return errors.New("слово FMT не найдено. Значение:" + pw.сhunkFmt)
 	}
 
 	// size fmt
@@ -99,6 +128,11 @@ func (pw *parsewav) Parse(dw *[]byte) (model.Wave, error) {
 	bitssample := (*dw)[model.IdxStartBitsPerSample:model.IdxEndBitsPerSample]
 	pw.bitperSample = binary.LittleEndian.Uint16(bitssample)
 
+	return nil
+}
+
+func (pw *parsewav) readData(dw *[]byte) error {
+
 	//*******************************
 	//    Д А Н Н Ы Е
 	//*******************************
@@ -106,7 +140,7 @@ func (pw *parsewav) Parse(dw *[]byte) (model.Wave, error) {
 	// chunk data
 	pw.сhunkData = string((*dw)[model.IdxStartWordData:model.IdxEndWordData])
 	if pw.сhunkData != string(model.ConstData) {
-		return nil, errors.New("слово data не найдено. Значение: " + pw.сhunkData)
+		return errors.New("слово data не найдено. Значение: " + pw.сhunkData)
 	}
 
 	// size RIFF
@@ -114,31 +148,78 @@ func (pw *parsewav) Parse(dw *[]byte) (model.Wave, error) {
 	pw.сhunkSizeData = binary.LittleEndian.Uint32(szData)
 
 	// data audio
-	dataAudio := (*dw)[model.IdxStartChunkData:]
-	pw.dataaudio = dataAudio
-	//pw.dataaudio = binary.LittleEndian.Uint32(dataAudio)
+	datawav := (*dw)[model.IdxStartChunkData:]
 
-	//*******************************
-	//    ОТОБРАЖЕНИЕ
-	//*******************************
+	// ТРЕБУЮТСЯ:
+	// [1] bitsample   = 16, 32, 64  // количество бит для одного sample
+	// [2] blockAling  = 2, 4        // Количество байтов для одного sample
+	// [3] numchannels = 1, 2        // Количество каналов. Моно = 1, Стерео = 2
 
-	fmt.Println("strRiff -->", pw.сhunkRIFF)
-	fmt.Println("strsize -->", pw.сhunkSizeRIFF)
-	fmt.Println("strWAVE -->", pw.сhunkWave)
+	// настройка slice для хранения sample
+	pw.setSizeSliceData()
 
-	fmt.Println("strFmt -->", pw.сhunkFmt)
-	fmt.Println("сhunkSizeFmt -->", pw.сhunkSizeFmt)
-	fmt.Println("audioformat -->", pw.audioformat)
-	fmt.Println("numChannels -->", pw.numChannels)
-	fmt.Println("samplerate -->", pw.sampleRate)
-	fmt.Println("byteRate -->", pw.byteRate)
-	fmt.Println("blockAling -->", pw.blockAling)
-	fmt.Println("bitperSample -->", pw.bitperSample)
+	// настройка на основе  размер slice для хранения
+	for idx := 0; idx < len(datawav); idx += int(pw.blockAling) {
 
-	fmt.Println("strdata -->", pw.сhunkData)
-	fmt.Println("sizeData -->", pw.сhunkSizeData)
-	fmt.Println("Data_audio -->", pw.dataaudio)
-	fmt.Println("Data_lenght -->", len(pw.dataaudio))
+		// получаем один SAMPLE с помощью BLOCKALIGN
+		sample := datawav[idx : idx+int(pw.blockAling)]
 
-	return nil, nil
+		// назначение sample
+		pw.setSample(sample)
+
+	}
+
+	return nil
+
+}
+
+func (pw *parsewav) setSample(sp []byte) {
+
+	// значение
+
+	// назначение sample на основе numchannel
+	switch pw.numChannels {
+
+	// МОНО
+	case uint16(model.ConstMono):
+		{
+			// littleendian
+			val := binary.LittleEndian.Uint32(sp)
+
+			// назначение
+			pw.dataaudio[model.ConstMonoCh] = append(pw.dataaudio[model.ConstMonoCh], val)
+		}
+
+	case uint16(model.ConstStereo):
+		{
+
+		}
+	}
+}
+
+func (pw *parsewav) setSizeSliceData() {
+
+	// найдем размер slice
+	sz := int(pw.сhunkSizeData) / int(pw.blockAling)
+
+	// определим тип данных для slice
+	//tdslice := pw.blockAling * pw.bitperSample
+
+	// настройка slice для хранения sample
+	switch pw.numChannels {
+
+	// МОНО
+	case uint16(model.ConstMono):
+		pw.dataaudio[model.ConstMonoCh] = make([]uint32, sz)
+		pw.dataaudio[model.ConstStereoRightCh] = nil
+		pw.dataaudio[model.ConstStereoLeftCh] = nil
+
+	// STEREO
+	case uint16(model.ConstStereo):
+
+		pw.dataaudio[model.ConstMonoCh] = nil
+		pw.dataaudio[model.ConstStereoRightCh] = make([]uint32, sz)
+		pw.dataaudio[model.ConstStereoLeftCh] = make([]uint32, sz)
+	}
+
 }

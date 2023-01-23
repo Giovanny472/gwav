@@ -1,5 +1,36 @@
 package model
 
+type WavTypeBits uint
+
+const (
+	Const16Bits = 16
+	Const32Bits = 32
+	Const64Bits = 64
+)
+
+type WavTypeAduioFormat uint
+
+const (
+	ConstAudioFormatPCM       = 1
+	ConstAudioFormatIEEEFLOAT = 3
+	ConstAudioFormatALAW      = 6
+)
+
+type WavTypeChannel uint
+
+const (
+	ConstMono   WavTypeChannel = 1
+	ConstStereo WavTypeChannel = 2
+)
+
+type WavChannels uint
+
+const (
+	ConstMonoCh        WavChannels = 0
+	ConstStereoRightCh WavChannels = 1
+	ConstStereoLeftCh  WavChannels = 2
+)
+
 type WavConst string
 
 const (
