@@ -159,7 +159,7 @@ func (pw *parsewav) readData(dw *[]byte) error {
 	pw.setSizeSliceData()
 
 	// настройка на основе  размер slice для хранения
-	for idx := 0; idx < len(datawav); idx += int(pw.blockAling) {
+	for idx := 0; idx < int(pw.сhunkSizeData); idx += int(pw.blockAling) {
 
 		// получаем один SAMPLE с помощью BLOCKALIGN
 		sample := datawav[idx : idx+int(pw.blockAling)]
