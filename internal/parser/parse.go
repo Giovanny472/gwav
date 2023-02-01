@@ -1,4 +1,4 @@
-package internal
+package parser
 
 import (
 	"encoding/binary"
@@ -46,10 +46,16 @@ func NewParser(bw model.BuilderWav) model.Parser {
 func (pw *parsewav) Parse(dw *[]byte) (model.Wave, error) {
 
 	// читаем заголовок
-	pw.readHeader(dw)
+	err := pw.readHeader(dw)
+	if err != nil {
+		return nil, err
+	}
 
 	// читаем данные
-	pw.readData(dw)
+	err = pw.readData(dw)
+	if err != nil {
+		return nil, err
+	}
 
 	// отображение данных
 	fmt.Println("Riff: ", pw.сhunkRIFF)
@@ -69,7 +75,28 @@ func (pw *parsewav) Parse(dw *[]byte) (model.Wave, error) {
 	fmt.Println("data size: ", pw.сhunkSizeData)
 	fmt.Println("dataaudio: ", pw.dataaudio)
 
-	return nil, nil
+	// создание объекта wave
+	pw.buildwav.BuildHeadRiff(
+		pw.сhunkRIFF,
+		pw.сhunkSizeRIFF,
+		pw.сhunkWave)
+
+	pw.buildwav.BuildHeadFmt(
+		pw.сhunkFmt,
+		pw.сhunkSizeFmt,
+		pw.audioformat,
+		pw.numChannels,
+		pw.sampleRate,
+		pw.byteRate,
+		pw.blockAling,
+		pw.bitperSample)
+
+	pw.buildwav.BuildData(
+		pw.сhunkData,
+		pw.сhunkSizeData,
+		pw.dataaudio)
+
+	return pw.buildwav.WavFile(), nil
 }
 
 func (pw *parsewav) readHeader(dw *[]byte) error {

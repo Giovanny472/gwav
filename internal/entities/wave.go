@@ -1,4 +1,4 @@
-package internal
+package entities
 
 import "github.com/Giovanny472/gwav/model"
 
@@ -13,10 +13,10 @@ type wavedescrip struct {
 
 var wavedescrp *wavedescrip
 
-func NewWave() model.Wave {
+func NewWave(h model.Header, d model.Data) model.Wave {
 
 	if wavedescrp == nil {
-		wavedescrp = &wavedescrip{}
+		wavedescrp = &wavedescrip{headwav: h, datawwav: d}
 	}
 	return wavedescrp
 }

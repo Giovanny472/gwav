@@ -1,4 +1,4 @@
-package internal
+package entities
 
 import "github.com/Giovanny472/gwav/model"
 
@@ -16,10 +16,10 @@ type headwav struct {
 
 var headw *headwav
 
-func NewHeadWav() model.Header {
+func NewHeadWav(r model.Riff, f model.Fmt) model.Header {
 
 	if headw == nil {
-		headw = &headwav{}
+		headw = &headwav{riff: r, fmt: f}
 	}
 	return headw
 }
@@ -41,7 +41,7 @@ type headRiff struct {
 	// RIFF header
 	// секция для слова RIFF
 	// 4 байта
-	riff [4]uint8
+	riff string
 
 	// RIFF Chunk Data Size
 	// Размер данных секции RIFF
@@ -51,19 +51,19 @@ type headRiff struct {
 	// WAVE header
 	// секция для слова WAVE типа RIFF
 	// 4 байта
-	wave [4]uint8
+	wave string
 }
 
 var hr *headRiff
 
-func NewHeadRiff(rf [4]uint8, sr uint32, wv [4]uint8) model.Riff {
+func NewHeadRiff(rf string, sr uint32, wv string) model.Riff {
 	if hr == nil {
 		hr = &headRiff{riff: rf, chunkSizeRIFF: sr, wave: wv}
 	}
 	return hr
 }
 
-func (hrf *headRiff) ChunkRIFF() [4]uint8 {
+func (hrf *headRiff) ChunkRIFF() string {
 	return hr.riff
 }
 
@@ -71,7 +71,7 @@ func (hrf *headRiff) ChunkSizeRIFF() uint32 {
 	return hrf.chunkSizeRIFF
 }
 
-func (hrf *headRiff) ChunkWave() [4]uint8 {
+func (hrf *headRiff) ChunkWave() string {
 	return hrf.wave
 }
 
@@ -84,7 +84,7 @@ type headFmt struct {
 
 	// секция для слова FMT
 	// 4 байта
-	fmt [4]uint8
+	fmt string
 
 	// RIFF Chunk Data Size
 	// Размер данных секции FMT
@@ -125,18 +125,17 @@ type headFmt struct {
 
 var hfmt *headFmt
 
-func NewHeadFmt(fm [4]uint8, sfm uint32, af uint16, nc uint16,
+func NewHeadFmt(fm string, sfm uint32, af uint16, nc uint16,
 	sr uint32, br uint32, ba uint16, bs uint16) model.Fmt {
 
 	if hfmt == nil {
 		hfmt = &headFmt{fmt: fm, chunkSizeFMT: sfm, audioFormat: af, numChannels: nc,
 			sampleRate: sr, byteRate: br, blockAlign: ba, bitsPerSample: bs}
-		return hfmt
 	}
 	return hfmt
 }
 
-func (hf *headFmt) ChunckFmt() [4]uint8 {
+func (hf *headFmt) ChunckFmt() string {
 	return hf.fmt
 }
 

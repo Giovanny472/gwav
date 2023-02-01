@@ -21,7 +21,7 @@ type Riff interface {
 
 	// секция для слова RIFF
 	// 4 байта (0-3 позиция). Big-endian form
-	ChunkRIFF() [4]uint8
+	ChunkRIFF() string
 
 	// RIFF Chunk Data Size
 	// Размер данных секции RIFF
@@ -31,7 +31,7 @@ type Riff interface {
 	// WAVE header
 	// секция для слова WAVE типа RIFF
 	// 4 байта (8-11 позиция). Big-endian form
-	ChunkWave() [4]uint8
+	ChunkWave() string
 }
 
 type Fmt interface {
@@ -40,7 +40,7 @@ type Fmt interface {
 	// секция для слова FMT
 	// "fmt" описывает формат звуковых данных:
 	// 4 байта (12-15 позиция). Big-endian form
-	ChunckFmt() [4]uint8
+	ChunckFmt() string
 
 	// RIFF Chunk Data Size
 	// Размер данных секции FMT
@@ -97,7 +97,7 @@ type Data interface {
 
 	// секция для слова data
 	// 4 байта (36-39 позиция). Big-endian form
-	ChunkData() [4]uint8
+	ChunkData() string
 
 	// NumSamples * NumChannels * BitsPerSample/8
 	// количество байт в данных
@@ -106,5 +106,5 @@ type Data interface {
 
 	// данные могут быть: is uint8, int16, or float32.
 	//  (44 - ...n позиция). Little-endian form
-	ListData() []any
+	ListData() map[WavChannels][]uint32
 }

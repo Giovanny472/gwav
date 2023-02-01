@@ -1,4 +1,4 @@
-package internal
+package entities
 
 import "github.com/Giovanny472/gwav/model"
 
@@ -10,7 +10,7 @@ type datawav struct {
 
 	// секция для слова data
 	// 4 байта (36-39 позиция). Big-endian form
-	chunkData [4]uint8
+	chunkData string
 
 	// NumSamples * NumChannels * BitsPerSample/8
 	// количество байт в данных
@@ -19,19 +19,19 @@ type datawav struct {
 
 	// данные могут быть: is uint8, int16, or float32.
 	//  (44 - ...n позиция). Little-endian form
-	listData []any
+	listData map[model.WavChannels][]uint32
 }
 
 var dwav *datawav
 
-func NewDataWav(cd [4]uint8, cs uint32, ld []any) model.Data {
+func NewDataWav(cd string, cs uint32, ld map[model.WavChannels][]uint32) model.Data {
 	if dwav == nil {
 		dwav = &datawav{chunkData: cd, chunkSizeData: cs, listData: ld}
 	}
 	return dwav
 }
 
-func (dw *datawav) ChunkData() [4]uint8 {
+func (dw *datawav) ChunkData() string {
 	return dw.chunkData
 }
 
@@ -39,6 +39,6 @@ func (dw *datawav) ChunkSizeData() uint32 {
 	return dw.chunkSizeData
 }
 
-func (dw *datawav) ListData() []any {
+func (dw *datawav) ListData() map[model.WavChannels][]uint32 {
 	return dw.listData
 }
