@@ -4,6 +4,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"log"
 
 	"github.com/Giovanny472/gwav/model"
 )
@@ -28,7 +29,9 @@ type parsewav struct {
 	// data
 	сhunkData     string
 	сhunkSizeData uint32
-	dataaudio     map[model.WavChannels][]uint32
+
+	datamono  []uint32
+	dataaudio map[model.WavChannels][]uint32
 
 	// для создания объекта wav
 	buildwav model.BuilderWav
@@ -211,15 +214,16 @@ func (pw *parsewav) setSample(sp []byte) {
 	case uint16(model.ConstMono):
 		{
 			// littleendian
-			val := binary.LittleEndian.Uint32(sp)
+			val := binary.LittleEndian.Uint16(sp)
 
 			// назначение
-			pw.dataaudio[model.ConstMonoCh] = append(pw.dataaudio[model.ConstMonoCh], val)
+			pw.datamono = append(pw.datamono, uint32(val))
+			pw.dataaudio[model.ConstMonoCh] = pw.datamono
 		}
 
 	case uint16(model.ConstStereo):
 		{
-
+			log.Println("setSample for numchannel=2(stereo) not implemented")
 		}
 	}
 }
@@ -229,6 +233,7 @@ func (pw *parsewav) setSizeSliceData() {
 	// найдем размер slice
 	sz := int(pw.сhunkSizeData) / int(pw.blockAling)
 
+	pw.dataaudio = make(map[model.WavChannels][]uint32)
 	// определим тип данных для slice
 	//tdslice := pw.blockAling * pw.bitperSample
 
@@ -237,16 +242,20 @@ func (pw *parsewav) setSizeSliceData() {
 
 	// МОНО
 	case uint16(model.ConstMono):
-		pw.dataaudio[model.ConstMonoCh] = make([]uint32, sz)
-		pw.dataaudio[model.ConstStereoRightCh] = nil
-		pw.dataaudio[model.ConstStereoLeftCh] = nil
+		{
+			pw.datamono = make([]uint32, sz)
+			pw.dataaudio[model.ConstMonoCh] = pw.datamono
+			pw.dataaudio[model.ConstStereoRightCh] = nil
+			pw.dataaudio[model.ConstStereoLeftCh] = nil
+		}
 
 	// STEREO
 	case uint16(model.ConstStereo):
-
-		pw.dataaudio[model.ConstMonoCh] = nil
-		pw.dataaudio[model.ConstStereoRightCh] = make([]uint32, sz)
-		pw.dataaudio[model.ConstStereoLeftCh] = make([]uint32, sz)
+		{
+			pw.dataaudio[model.ConstMonoCh] = nil
+			pw.dataaudio[model.ConstStereoRightCh] = make([]uint32, sz)
+			pw.dataaudio[model.ConstStereoLeftCh] = make([]uint32, sz)
+		}
 	}
 
 }
