@@ -3,7 +3,6 @@ package parser
 import (
 	"encoding/binary"
 	"errors"
-	"fmt"
 	"log"
 
 	"github.com/Giovanny472/gwav/model"
@@ -61,22 +60,24 @@ func (pw *parsewav) Parse(dw *[]byte) (model.Wave, error) {
 	}
 
 	// отображение данных
-	fmt.Println("Riff: ", pw.сhunkRIFF)
-	fmt.Println("Riffsize: ", pw.сhunkSizeRIFF)
-	fmt.Println("WAVE: ", pw.сhunkWave)
+	/*
+		fmt.Println("Riff: ", pw.сhunkRIFF)
+		fmt.Println("Riffsize: ", pw.сhunkSizeRIFF)
+		fmt.Println("WAVE: ", pw.сhunkWave)
 
-	fmt.Println("Fmt: ", pw.сhunkFmt)
-	fmt.Println("сhunkSizeFmt: ", pw.сhunkSizeFmt)
-	fmt.Println("audioformat: ", pw.audioformat)
-	fmt.Println("numChannels: ", pw.numChannels)
-	fmt.Println("sampleRate: ", pw.sampleRate)
-	fmt.Println("byteRate: ", pw.byteRate)
-	fmt.Println("blockAling: ", pw.blockAling)
-	fmt.Println("bitperSample: ", pw.bitperSample)
+		fmt.Println("Fmt: ", pw.сhunkFmt)
+		fmt.Println("сhunkSizeFmt: ", pw.сhunkSizeFmt)
+		fmt.Println("audioformat: ", pw.audioformat)
+		fmt.Println("numChannels: ", pw.numChannels)
+		fmt.Println("sampleRate: ", pw.sampleRate)
+		fmt.Println("byteRate: ", pw.byteRate)
+		fmt.Println("blockAling: ", pw.blockAling)
+		fmt.Println("bitperSample: ", pw.bitperSample)
 
-	fmt.Println("data :", pw.сhunkData)
-	fmt.Println("data size: ", pw.сhunkSizeData)
-	fmt.Println("dataaudio: ", pw.dataaudio)
+		fmt.Println("data :", pw.сhunkData)
+		fmt.Println("data size: ", pw.сhunkSizeData)
+		fmt.Println("dataaudio: ", pw.dataaudio)
+	*/
 
 	// создание объекта wave
 	pw.buildwav.BuildHeadRiff(
